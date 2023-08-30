@@ -1,13 +1,18 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const routes = require('./routes');
+const mongoose = require('mongoose');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
-const port = 3000;
 
-app.use(bodyParser.json());
-app.use('/', routes);
+app.use(express.json());
+mongoose.connect('mongodb://localhost:27017/jwt-auth', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-app.listen(port, () => {
-  console.log(`App running on http://localhost:${port}`);
+
+app.use('/api', authRoutes);
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
 });

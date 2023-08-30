@@ -1,8 +1,16 @@
 const express = require('express');
-const userRoutes = require('./userRoutes');
+const authRoutes = require('./authRoutes'); // Update the path as per your directory structure
 
-const router = express.Router();
+const app = express();
 
-router.use('/user', userRoutes);
+// Middleware
+app.use(express.json());
 
-module.exports = router;
+// Routes
+app.use('/api/auth', authRoutes);
+
+// Starting server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
+});
