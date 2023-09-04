@@ -1,5 +1,5 @@
 const DBAdapter = require('./dbAdapter');
-const User = require('../models/userModel');
+const User = require('../models/userModelMongoDB');
 
 class MongoAdapter extends DBAdapter {
   async createUser(username, password) {
