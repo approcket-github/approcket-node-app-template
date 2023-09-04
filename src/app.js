@@ -10,9 +10,8 @@ mongoose.connect('mongodb://localhost:27017/jwt-auth', {
   useUnifiedTopology: true,
 });
 
-
 app.use('/api', authRoutes);
 
 app.listen(3000, () => {
-  console.log('Server running on port 3000');
+ console.log('Server running on port 3000');
 });
