@@ -6,7 +6,7 @@ Project Name: NODE-APP-TEMPLATE
 
 A basic template which includes Login, Logout and Register functionality with JWT token, and few security chekcks i.e Mongo Sanitize and Helmet headers. 
 
----------------------------------------------------------------------Getting Started-------------------------------------------------------
+```````Getting Started````````
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
