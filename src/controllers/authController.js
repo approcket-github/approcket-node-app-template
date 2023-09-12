@@ -2,14 +2,17 @@ const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-exports.register = async (req, res) => {
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret'; // Fetching from environment variable
+
+// Registers a new user
+const register = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // Check for existing user
+    // Check if the user already exists in the database
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(409).send('Username already exists');
+      return res.status(409).json({ message: 'Username already exists' });
     }
 
     const user = new User({
@@ -18,38 +21,49 @@ exports.register = async (req, res) => {
     });
 
     await user.save();
-    res.status(201).send('User registered successfully');
+    res.status(201).json({ message: 'User registered successfully' });
 
   } catch (error) {
-    if (error.name === 'MongoError' && error.code === 11000) {
-      return res.status(409).send('Username already exists');
+    switch (error.name) {
+      case 'MongoError':
+        if (error.code === 11000) {
+          return res.status(409).json({ message: 'Username already exists' });
+        }
+        break;
+      case 'ValidationError':
+        return res.status(400).json({ message: error.message });
+      default:
+        return res.status(500).json({ message: 'Internal server error' });
     }
-    if (error.name === 'ValidationError') {
-      return res.status(400).send(error.message);
-    }
-    return res.status(500).send('Internal server error');
   }
 };
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
     const user = await User.findOne({ username });
-    if (!user) return res.status(400).send('Invalid username or password');
+    if (!user) return res.status(400).json({ message: 'Invalid username or password' });
 
     const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) return res.status(400).send('Invalid username or password');
+    if (!validPassword) return res.status(400).json({ message: 'Invalid username or password' });
 
-    const token = jwt.sign({ _id: user._id }, 'YOUR_SECRET_KEY');
-    res.status(200).header('Authorization', `Bearer ${token}`).send(token);
+    // Generate JWT token with a 1-hour expiration time
+    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    res.status(200).header('Authorization', `Bearer ${token}`).json({ token });
     
   } catch (error) {
-    res.status(500).send('Internal server error');
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-exports.logout = (req, res) => {
-  // Logic for logging out, usually done on client-side (remove JWT token)
-  res.status(200).send('User logged out');
+const logout = (req, res) => {
+  // Logic for logging out to be done on the client-side (remove JWT token)
+  res.status(200).json({ message: 'User logged out' });
+};
+
+module.exports = {
+  register,
+  login,
+  logout
 };
