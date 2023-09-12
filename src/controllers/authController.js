@@ -1,57 +1,55 @@
-// authController.js
+const User = require('../models/userModel');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-module.exports = function(adapter) {
+exports.register = async (req, res) => {
+  try {
+    const { username, password } = req.body;
 
-  const bcrypt = require('bcryptjs');
-  const jwt = require('jsonwebtoken');
-
-  const register = async (req, res) => {
-    try {
-      const { username, password } = req.body;
-
-      // Check for existing user
-      const existingUser = await adapter.findUserByUsername(username);
-      if (existingUser) {
-        return res.status(409).json({ message: 'Username already exists' });
-      }
-
-      await adapter.createUser(username, password);
-
-      res.status(201).json({ message: 'User registered successfully' });
-
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+    // Check for existing user
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(409).send('Username already exists');
     }
-  };
 
-  const login = async (req, res) => {
-    try {
-      const { username, password } = req.body;
+    const user = new User({
+      username,
+      password,
+    });
 
-      const user = await adapter.findUserByUsername(username);
-      if (!user) return res.status(400).json({ message: 'Invalid username or password' });
+    await user.save();
+    res.status(201).send('User registered successfully');
 
-      const validPassword = await bcrypt.compare(password, user.password);
-      if (!validPassword) return res.status(400).json({ message: 'Invalid username or password' });
-
-      const token = jwt.sign({ _id: user._id }, 'YOUR_SECRET_KEY');
-      res.status(200).header('Authorization', `Bearer ${token}`).json({ token });
-
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+  } catch (error) {
+    if (error.name === 'MongoError' && error.code === 11000) {
+      return res.status(409).send('Username already exists');
     }
-  };
+    if (error.name === 'ValidationError') {
+      return res.status(400).send(error.message);
+    }
+    return res.status(500).send('Internal server error');
+  }
+};
 
-  const logout = (req, res) => {
-    // Logic for logging out, usually done on client-side (remove JWT token)
-    res.status(200).json({ message: 'User logged out' });
-  };
+exports.login = async (req, res) => {
+  try {
+    const { username, password } = req.body;
 
-  return {
-    register,
-    login,
-    logout,
-  };
+    const user = await User.findOne({ username });
+    if (!user) return res.status(400).send('Invalid username or password');
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) return res.status(400).send('Invalid username or password');
+
+    const token = jwt.sign({ _id: user._id }, 'YOUR_SECRET_KEY');
+    res.status(200).header('Authorization', `Bearer ${token}`).send(token);
+    
+  } catch (error) {
+    res.status(500).send('Internal server error');
+  }
+};
+
+exports.logout = (req, res) => {
+  // Logic for logging out, usually done on client-side (remove JWT token)
+  res.status(200).send('User logged out');
 };

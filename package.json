@@ -20,12 +20,10 @@
   },
   "homepage": "https://github.com/approcket-github/node-app-template#readme",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "dotenv": "^16.3.1",
     "express": "^4.17.1",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.12",
-    "pg": "^8.11.3"
+    "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

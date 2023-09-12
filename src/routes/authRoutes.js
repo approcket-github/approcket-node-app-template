@@ -1,13 +1,11 @@
 const express = require('express');
+const { register, login, logout } = require('../controllers/authController');
 const authMiddleware = require('../middleware/auth');
 
-module.exports = (adapter) => {
-  const router = express.Router();
-  const authController = require('../controllers/authController')(adapter);
+const router = express.Router();
 
-  router.post('/register', authController.register);
-  router.post('/login', authController.login);
-  router.post('/logout', authMiddleware, authController.logout);
+router.post('/register', register);
+router.post('/login', login);
+router.post('/logout', authMiddleware, logout);  // Protected route
 
-  return router;
-};
+module.exports = router;
