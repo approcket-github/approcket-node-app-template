@@ -2,7 +2,7 @@
 
 
 
-Project Name: NODE-APP-TEMPLATE
+## Project Name: NODE-APP-TEMPLATE
 
 A basic template which includes Login, Logout and Register functionality with JWT token, and few security chekcks i.e Mongo Sanitize and Helmet headers. 
 
@@ -17,7 +17,7 @@ Node.js
 npm
 
 `````````
-Installing
+## Installing
 
 `````````
 Clone the repository:
@@ -29,7 +29,8 @@ cd <project-directory>
 Install the dependencies:
 
 npm install
-Available Scripts
+
+## Available Scripts
 
 In the project directory, you can run:
 
@@ -42,14 +43,15 @@ Runs the app in the development mode using nodemon. The app will auto-reload if 
 npm test
 Launches the test runner. Currently, no tests are specified.
 
-Built With
+## Built With
 
 Node.js
 Express - The web framework used
 
 `````````
-License
+*License*
 
+`````````
 This project is licensed under the MIT License - see the LICENSE.md file for details.
 
 `````````
