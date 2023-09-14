@@ -6,8 +6,6 @@ const jwt = require('jsonwebtoken');
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
-const SALT_ROUNDS = 8;
-
 
 if (!JWT_SECRET) {
     console.error("JWT_SECRET is not defined in environment variables.");
@@ -58,7 +56,7 @@ const login = async (req, res) => {
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) return res.status(400).json({ message: 'Invalid username or password' });
 
-        //Change expiry time if needed
+        //Change expiry time as required
         const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '1h' });
         res.status(200).header('Authorization', `Bearer ${token}`).json({ token });
 
