@@ -1,0 +1,34 @@
+{
+  "name": "app-template",
+  "version": "1.0.0",
+  "description": "NODE-APP-TEMPLATE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/approcket-github/node-app-template.git"
+  },
+  "keywords": [],
+  "author": "AppRocket",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/approcket-github/node-app-template/issues"
+  },
+  "homepage": "https://github.com/approcket-github/node-app-template#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.17.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^6.0.12"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
