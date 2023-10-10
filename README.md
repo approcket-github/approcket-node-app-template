@@ -2,13 +2,13 @@
 
 
 
-## Project Name: NODE-APP-TEMPLATE
+## Project Name: APPROCKET
 
-A basic template which includes Login, Logout and Register functionality with JWT token, and few security chekcks i.e Mongo Sanitize and Helmet headers. 
+AppRocket is a basic template which includes Login, Logout and Register functionality with JWT token, and few security chekcks i.e Mongo Sanitize and Helmet headers. Download this Node.js App and set it up on your machine to get started with your back-end development quickly.
 
 ```````Getting Started````````
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+These instructions will get you a copy of the AppRocket project up and running on your local machine for development and testing purposes.
 
 Prerequisites
 
